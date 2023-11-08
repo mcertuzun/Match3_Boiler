@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Core.ItemBase;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,10 +14,34 @@ namespace Core
         private bool _isFull;
         public List<Cell> Neighbours { get; private set; }
         [HideInInspector] public Cell FirstCellBelow;
-
+        [HideInInspector] public bool IsFillingCell;
 
         public TextMesh LabelText;
 
+        private Item _item;
+        public Item Item
+        {
+            get
+            {
+                return _item;
+            }
+            set
+            {
+                if (_item == value) return;
+				
+                var oldItem = _item;
+                _item = value;
+				
+                if (oldItem != null && Equals(oldItem.Cell, this))
+                {
+                    oldItem.Cell = null;
+                }
+                if (value != null)
+                {
+                    value.Cell = this;
+                }
+            }
+        }
 
         public void Prepare(int x, int y, Board board)
         {
@@ -50,7 +75,19 @@ namespace Core
 
             if (down != null) FirstCellBelow = down;
         }
-
+        public Cell GetFallTarget()
+        {
+            var targetCell = this;
+            while (targetCell.FirstCellBelow != null && targetCell.FirstCellBelow.Item == null)
+            {
+                targetCell = targetCell.FirstCellBelow;
+            }
+            return targetCell;
+        }
+        public bool HasItem()
+        {
+            return Item != null;
+        }
         private void OnDrawGizmos()
         {
            // Handles.color = Color.red;

@@ -6,17 +6,17 @@ namespace Core
 {
     public class Board : MonoBehaviour
     {
-        private  Cell[,] Cells;
-        [SerializeField] BoardData boardData;
+        public  Cell[,] Cells= new Cell[Rows, Cols];
+        [SerializeField] public BoardData boardData;
+        public Transform ItemsParent;
+        public const int Rows = 9;
+        public const int Cols = 9;
 
-
-        private void Awake()
+        public void Prepare()
         {
-            Cells = new Cell[boardData.columnCount, boardData.rowCount];
             CreateCells();
             PrepareCells();
         }
-
         private void CreateCells()
         {
             for (int y = 0; y < boardData.rowCount; y++)
