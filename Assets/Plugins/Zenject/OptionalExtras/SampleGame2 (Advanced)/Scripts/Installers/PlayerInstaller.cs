@@ -10,8 +10,7 @@ namespace Zenject.SpaceFighter
 
         public override void InstallBindings()
         {
-            Container.Bind<Player>().AsSingle()
-                .WithArguments(_settings.Rigidbody, _settings.MeshRenderer);
+            Container.Bind<Player>().AsSingle().WithArguments(_settings.Rigidbody, _settings.MeshRenderer);
 
             Container.BindInterfacesTo<PlayerInputHandler>().AsSingle();
             Container.BindInterfacesTo<PlayerMoveHandler>().AsSingle();
